@@ -29,6 +29,7 @@ export default function Home() {
     铭洋音乐: 40453885,
     南山二哥: 15946625,
     萝莉大叔: 40634639,
+    北国风云: 90068978,
   };
 
   const [selectedUser, setSelectedUser] = useState<string>("");
