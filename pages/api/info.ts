@@ -23,6 +23,10 @@ const apis = {
     api.get(
       `https://live.blued.cn/live/stars/${uid}/consumes?page=${page}&lid=${lid}&type=month`
     ),
+  currentConsume: (uid: number, lid: number, page: number = 1) =>
+    api.get(
+      `https://live.blued.cn/live/stars/${uid}/consumes/${lid}?page=${page}`
+    ),
 };
 
 export default async function handler(
@@ -38,6 +42,7 @@ export default async function handler(
   if (data.data[0].live) {
     let page = 1;
     let consumes: any[] = [];
+    let currentConsumes: any[] = [];
     while (page < 6) {
       const { data: consumeInfo } = await apis.consumes(
         Number(req.query.id),
@@ -46,14 +51,27 @@ export default async function handler(
       );
       if (consumeInfo.code !== 200) break;
       consumes = consumes.concat(consumeInfo.data);
+      const { data: currentConsumeInfo } = await apis.currentConsume(
+        Number(req.query.id),
+        data.data[0].live,
+        page
+      );
+      if (currentConsumeInfo.code !== 200) break;
+      currentConsumes = currentConsumes.concat(currentConsumeInfo.data);
       page++;
     }
     resData.consume = consumes;
+    resData.currentConsume = currentConsumes;
     let total = 0;
     consumes.forEach((consume) => {
       total += parseInt(consume.beans);
     });
     resData.total = total;
+    let currentTotal = 0;
+    currentConsumes.forEach((consume) => {
+      currentTotal += parseInt(consume.beans);
+    });
+    resData.currentTotal = currentTotal;
   }
   res.status(200).json(resData);
 }

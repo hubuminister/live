@@ -100,6 +100,7 @@ export default function Home() {
             )}
             {data && data.consume && (
               <div className="mt-2 flex flex-col w-full">
+                <span className=" font-bold">月榜</span>
                 <table className="w-full">
                   <tbody className="w-full">
                     <tr className="w-full border">
@@ -114,6 +115,42 @@ export default function Home() {
                       </td>
                     </tr>
                     {data.consume.map(
+                      (item: { name: string; beans: string }, idx: number) => {
+                        if (idx > 4) return null;
+                        return (
+                          <tr key={idx} className="w-full border">
+                            <td align="center" width={"15%"}>
+                              {idx + 1}
+                            </td>
+                            <td align="center" width={"50%"}>
+                              {item.name}
+                            </td>
+                            <td align="center" width={"35%"}>
+                              {parseInt(item.beans)} 豆
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )}
+                  </tbody>
+                </table>
+
+                <span className=" font-bold">当前场次榜单</span>
+                <span>{data.currentTotal} 豆</span>
+                <table className="w-full">
+                  <tbody className="w-full">
+                    <tr className="w-full border">
+                      <td align="center" width={"15%"}>
+                        排名
+                      </td>
+                      <td align="center" width={"50%"}>
+                        用户名
+                      </td>
+                      <td align="center" width={"35%"}>
+                        豆子
+                      </td>
+                    </tr>
+                    {data.currentConsume.map(
                       (item: { name: string; beans: string }, idx: number) => {
                         if (idx > 4) return null;
                         return (
