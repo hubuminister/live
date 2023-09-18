@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import geoIp2 from "geoip-lite2";
+import IP2Region from "ip2region";
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios, { isAxiosError } from "axios";
 import clientPromise from "@/lib/db";
@@ -11,18 +11,18 @@ interface Token {
   _id: ObjectId;
 }
 
+const geoIp2 = new IP2Region();
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const geo = geoIp2.lookup(
+    const geo = geoIp2.search(
       typeof req.headers["x-real-ip"] === "string"
         ? req.headers["x-real-ip"]
         : req.headers["x-real-ip"]?.[0] || ""
     );
-    console.log(req.headers);
-
     const client = await clientPromise;
     const db = client.db("blued-live");
     const collection = db.collection("auth");
@@ -67,7 +67,7 @@ export default async function handler(
       avatar: data.data[0].raw_avatar,
     };
     console.log(
-      `${dayjs().format("YYYY-MM-DD HH:mm:ss")} - ${geo?.city} - ${
+      `${dayjs().format("YYYY-MM-DD HH:mm:ss")} - ${geo?.city}${geo?.isp} - ${
         resData.name
       }`
     );
