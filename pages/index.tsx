@@ -1,42 +1,21 @@
 import { Button, DotLoading, Picker } from "antd-mobile";
+import { NextPageContext } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 
-export default function Home() {
-  const allUser: { [key: string]: number } = {
-    派大星: 97693327,
-    远良: 6607184,
-    蛋蛋: 92976420,
-    等等: 72174263,
-    八尺: 77767285,
-    山谷: 93680849,
-    星星: 2357659,
-    承诺: 60370002,
-    左耳: 3231851,
-    沐阳: 93465089,
-    豆豆: 17733794,
-    有酒: 4372883,
-    N先生: 70349950,
-    痞憨憨: 31959031,
-    DC墩墩: 32074790,
-    西门: 96867197,
-    黑子涛: 42858456,
-    老舅: 4707945,
-    陶大宝: 53050163,
-    小灰灰: 94377592,
-    土豆BB: 96115420,
-    韩乖乖: 29872049,
-    小胖饿瘦了: 86253971,
-    铭洋音乐: 40453885,
-    南山二哥: 15946625,
-    萝莉大叔: 40634639,
-    北国风云: 90068978,
-    seven瑞:30875614,
-    猪祝朱:92606488
-  };
+interface User {
+  name: string;
+  _id: string;
+  uid: number;
+}
 
-  const [selectedUser, setSelectedUser] = useState<string>("");
+type Props = {
+  users: User[];
+};
+
+export default function Home({ users }: Props) {
+  const [selectedUser, setSelectedUser] = useState<User | undefined>();
   const [showPicker, setShowPicker] = useState(false);
 
   const {
@@ -44,7 +23,7 @@ export default function Home() {
     isLoading,
     mutate: run,
   } = useSWR(selectedUser, (k) => {
-    return fetch(`/api/info?id=${allUser[selectedUser]}`).then((r) => r.json());
+    return fetch(`/api/info?id=${selectedUser?.uid}`).then((r) => r.json());
   });
 
   useEffect(() => {
@@ -57,21 +36,24 @@ export default function Home() {
         <Button onClick={() => setShowPicker(true)}>选择主播</Button>
         <Picker
           columns={[
-            Object.keys(allUser).map((key) => ({
-              label: key,
-              value: key,
-            })),
+            users.map((user) => {
+              return {
+                label: user.name,
+                value: user.name,
+              };
+            }),
           ]}
           visible={showPicker}
           onCancel={() => setShowPicker(false)}
           onClose={() => setShowPicker(false)}
           onConfirm={(v) => {
             if (v.length === 0) return;
-            // @ts-ignore
-            setSelectedUser(v[0]);
+            if (v[0] === null) return;
+            const user = users.find((u) => u.name === v[0]);
+            setSelectedUser(user);
           }}
         />
-        <div>{selectedUser}</div>
+        <div>{selectedUser?.name}</div>
       </div>
       {isLoading && <DotLoading />}
       {data && data.error && <div className="text-2xl mt-4">{data.error}</div>}
@@ -182,4 +164,32 @@ export default function Home() {
       )}
     </div>
   );
+}
+
+import clientPromise from "@/lib/db";
+export async function getServerSideProps(ctx: NextPageContext) {
+  try {
+    const client = await clientPromise;
+    const db = client.db("blued-live");
+    const collection = db.collection("anchor");
+    const result = await collection.find<User>({}).toArray();
+    const users = result.map((user) => {
+      return {
+        id: user._id.toString(),
+        name: user.name,
+        uid: user.uid,
+      };
+    });
+    return {
+      props: {
+        users,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        users: [],
+      },
+    };
+  }
 }
