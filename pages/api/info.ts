@@ -1,8 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import geoIp2 from "geoip-lite2";
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios, { isAxiosError } from "axios";
 import clientPromise from "@/lib/db";
 import { ObjectId } from "mongodb";
+import dayjs from "dayjs";
 
 interface Token {
   token: string;
@@ -14,6 +16,13 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    const geo = geoIp2.lookup(
+      typeof req.headers["x-real-ip"] === "string"
+        ? req.headers["x-real-ip"]
+        : req.headers["x-real-ip"]?.[0] || ""
+    );
+    console.log(req.headers);
+
     const client = await clientPromise;
     const db = client.db("blued-live");
     const collection = db.collection("auth");
@@ -57,6 +66,12 @@ export default async function handler(
       name: data.data[0].name,
       avatar: data.data[0].raw_avatar,
     };
+    console.log(
+      `${dayjs().format("YYYY-MM-DD HH:mm:ss")} - ${geo?.city} - ${
+        resData.name
+      }`
+    );
+
     if (data.data[0].live) {
       let page = 1;
       let consumes: any[] = [];
@@ -94,14 +109,12 @@ export default async function handler(
     res.status(200).json(resData);
   } catch (error) {
     if (isAxiosError(error)) {
-      return res
-        .status(error?.response?.status || 500)
-        .json({
-          error:
-            error?.response?.data?.message === "Illegal request"
-              ? "授权过期,请联系管理更新授权."
-              : "" || "服务器错误",
-        });
+      return res.status(error?.response?.status || 500).json({
+        error:
+          error?.response?.data?.message === "Illegal request"
+            ? "授权过期,请联系管理更新授权."
+            : "" || "服务器错误",
+      });
     }
     return res.status(500).json({ error: "服务器错误" });
   }

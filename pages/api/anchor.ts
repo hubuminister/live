@@ -6,7 +6,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req.body);
   const method = req.method;
   try {
     const client = await clientPromise;
@@ -17,25 +16,25 @@ export default async function handler(
       case "POST":
         const { uid, name }: { uid: number; name: string } = req.body;
         if (!uid || !name) {
-          res.status(400).json({ msg: "参数错误" });
+          res.status(400).json({ error: "参数错误" });
           return;
         }
         const exist = await collection.findOne({ uid });
         if (exist) {
-          res.status(200).json({ msg: "已存在" });
+          res.status(200).json({ error: "已存在" });
           return;
         }
         await collection.insertOne({ uid, name });
-        res.status(201).json({ msg: "添加成功" });
+        res.status(201).json({ message: "添加成功" });
         return;
       case "DELETE":
         const { uid: deleteUid }: { uid: number } = req.body;
         if (!deleteUid) {
-          res.status(400).json({ msg: "参数错误" });
+          res.status(400).json({ error: "参数错误" });
           return;
         }
         await collection.deleteOne({ uid: deleteUid });
-        res.status(200).json({ msg: "删除成功" });
+        res.status(200).json({ message: "删除成功" });
         return;
 
       case "GET":
@@ -47,7 +46,7 @@ export default async function handler(
           uid: Number(req.query["uid"]),
         });
         if (!anchor) {
-          res.status(404).json({ msg: "未找到" });
+          res.status(404).json({ error: "未找到" });
           return;
         }
         res.status(200).json(anchor);
@@ -59,12 +58,12 @@ export default async function handler(
           edit: { uid: editedUid, name: editedName },
         }: { uid: number; edit: { uid?: number; name?: string } } = req.body;
         if (!putUid) {
-          res.status(400).json({ msg: "参数错误" });
+          res.status(400).json({ error: "参数错误" });
           return;
         }
         const putAnchor = await collection.findOne({ uid: Number(putUid) });
         if (!putAnchor) {
-          res.status(404).json({ msg: "未找到" });
+          res.status(404).json({ error: "未找到" });
           return;
         }
         if (editedUid) {
@@ -79,14 +78,13 @@ export default async function handler(
             { $set: { name: editedName } }
           );
         }
-        res.status(200).json({ msg: "修改成功" });
+        res.status(200).json({ message: "修改成功" });
         return;
 
       default:
+        res.end();
         break;
     }
-
-    res.status(200).json({ msg: "请求成功" });
   } catch (error) {
     res.status(500).json({ error: "服务错误" });
   }

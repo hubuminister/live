@@ -55,7 +55,7 @@ export default function Home({ users }: Props) {
         />
         <div>{selectedUser?.name}</div>
       </div>
-      {isLoading && <DotLoading />}
+      {isLoading && <DotLoading className="mt-5" />}
       {data && data.error && <div className="text-2xl mt-4">{data.error}</div>}
       {data && !data.error && (
         <div className="text-xl mt-4 w-full">
@@ -78,6 +78,9 @@ export default function Home({ users }: Props) {
             {data.total && (
               <div className="w-full flex flex-col items-center justify-center">
                 <span>当月总榜:{data.total} 豆</span>
+                <span className="text-xs ml-5">
+                  仅计算榜单信息,未包含注销账户.
+                </span>
                 <span>
                   预估收入:
                   {((data.total / 10) * 0.57).toFixed(2)} 元

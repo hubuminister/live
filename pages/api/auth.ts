@@ -35,7 +35,8 @@ export default async function handler(
       await collection.insertOne({ token: token });
     }
 
-    res.status(200).json({ error: "请求成功" });
+    res.status(200).json({ message: "请求成功" });
+    return;
   } catch (error) {
     return res.status(500).json({ error: "服务器错误" });
   }
