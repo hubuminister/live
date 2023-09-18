@@ -67,9 +67,9 @@ export default async function handler(
       avatar: data.data[0].raw_avatar,
     };
     console.log(
-      `${dayjs().format("YYYY-MM-DD HH:mm:ss")} - ${geo?.city}${geo?.isp} - ${
-        resData.name
-      }`
+      `${dayjs().format("MM-DD HH:mm")} - ${req.headers["x-real-ip"]} ${
+        geo?.city
+      }${geo?.isp} - ${resData.name}`
     );
 
     if (data.data[0].live) {
