@@ -66,6 +66,11 @@ export default async function handler(
       name: data.data[0].name,
       avatar: data.data[0].raw_avatar,
     };
+
+    if (data.data[0].liveshow) {
+      resData.liveshow = data.data[0].liveshow;
+    }
+
     console.log(
       `${dayjs().format("MM-DD HH:mm")} - ${req.headers["x-real-ip"]} ${
         geo?.city

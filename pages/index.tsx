@@ -3,6 +3,9 @@ import { NextPageContext } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 interface User {
   name: string;
@@ -17,6 +20,15 @@ type Props = {
 export default function Home({ users }: Props) {
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
   const [showPicker, setShowPicker] = useState(false);
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   const {
     data,
@@ -126,6 +138,18 @@ export default function Home({ users }: Props) {
                 </table>
 
                 <span className=" font-bold">当前场次榜单</span>
+                {data.liveshow && (
+                  <span className="text-md">
+                    开播时间:{" "}
+                    {dayjs(data.liveshow.start_time * 1000).format("HH:mm:ss")}{" "}
+                    时长:{" "}
+                    {dayjs(now).diff(
+                      data.liveshow.start_time * 1000,
+                      "minutes"
+                    )}
+                    分钟
+                  </span>
+                )}
                 <span>{data.currentTotal} 豆</span>
                 <table className="w-full">
                   <tbody className="w-full">
