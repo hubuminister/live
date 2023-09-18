@@ -12,10 +12,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req.headers);
-
-  console.log(req.body);
-
   try {
     if (req.method !== "POST") {
       res.status(400).json({ error: "参数错误" });

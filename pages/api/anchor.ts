@@ -6,13 +6,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-
-  console.log(req.headers);
-  console.log(req.body);
-  
-  
-
-
   const method = req.method;
   try {
     const client = await clientPromise;
