@@ -32,6 +32,8 @@ export default function Home() {
     南山二哥: 15946625,
     萝莉大叔: 40634639,
     北国风云: 90068978,
+    seven瑞:30875614,
+    猪祝朱:92606488
   };
 
   const [selectedUser, setSelectedUser] = useState<string>("");
