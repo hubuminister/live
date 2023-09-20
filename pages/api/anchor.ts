@@ -28,12 +28,11 @@ export default async function handler(
         res.status(201).json({ message: "添加成功" });
         return;
       case "DELETE":
-        const { uid: deleteUid }: { uid: number } = req.body;
-        if (!deleteUid) {
+        if (!req.query.uid) {
           res.status(400).json({ error: "参数错误" });
           return;
         }
-        await collection.deleteOne({ uid: deleteUid });
+        await collection.deleteOne({ uid: req.query.uid });
         res.status(200).json({ message: "删除成功" });
         return;
 
