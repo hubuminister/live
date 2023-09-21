@@ -18,11 +18,11 @@ type Props = {
 };
 
 export default function Home({ users }: Props) {
-  return (
-    <div className="w-full min-h-screen flex justify-center items-center flex-col">
-      <span>暂停服务了,有缘再相会.</span>
-    </div>
-  );
+  // return (
+  //   <div className="w-full min-h-screen flex justify-center items-center flex-col">
+  //     <span>暂停服务了,有缘再相会.</span>
+  //   </div>
+  // );
 
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
   const [showPicker, setShowPicker] = useState(false);
