@@ -18,11 +18,11 @@ type Props = {
 };
 
 export default function Home({ users }: Props) {
-  return (
-    <div className="w-full min-h-screen flex justify-center items-center flex-col">
-      <span>再见，感谢一个多月来给我带来的欢乐，再也不见。</span>
-    </div>
-  );
+  // return (
+  //   <div className="w-full min-h-screen flex justify-center items-center flex-col">
+  //     <span>再见，感谢一个多月来给我带来的欢乐，再也不见。</span>
+  //   </div>
+  // );
 
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
   const [showPicker, setShowPicker] = useState(false);
@@ -153,7 +153,15 @@ export default function Home({ users }: Props) {
                       data.liveshow.start_time * 1000,
                       "minutes"
                     )}
-                    分钟
+                    分钟{" "}
+                    {(
+                      data.currentTotal /
+                      dayjs(now).diff(
+                        data.liveshow.start_time * 1000,
+                        "minutes"
+                      )
+                    ).toFixed(2)}{" "}
+                    豆/分钟
                   </span>
                 )}
                 <span>{data.currentTotal} 豆</span>
