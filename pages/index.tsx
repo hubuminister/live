@@ -18,11 +18,13 @@ type Props = {
 };
 
 export default function Home({ users }: Props) {
-  // return (
-  //   <div className="w-full min-h-screen flex justify-center items-center flex-col">
-  //     <span>再见，感谢一个多月来给我带来的欢乐，再也不见。</span>
-  //   </div>
-  // );
+  if (!users || users.length === 0) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center flex-col">
+        <span>您无权访问.</span>
+      </div>
+    );
+  }
 
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
   const [showPicker, setShowPicker] = useState(false);
@@ -210,6 +212,15 @@ export default function Home({ users }: Props) {
 import clientPromise from "@/lib/db";
 export async function getServerSideProps(ctx: NextPageContext) {
   try {
+    const { p } = ctx.query;
+    if (!p || p !== "zhe") {
+      return {
+        props: {
+          users: [],
+        },
+      };
+    }
+
     const client = await clientPromise;
     const db = client.db("blued-live");
     const collection = db.collection("anchor");
