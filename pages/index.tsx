@@ -18,14 +18,6 @@ type Props = {
 };
 
 export default function Home({ users }: Props) {
-  if (!users || users.length === 0) {
-    return (
-      <div className="w-full min-h-screen flex justify-center items-center flex-col">
-        <span>您无权访问.</span>
-      </div>
-    );
-  }
-
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
   const [showPicker, setShowPicker] = useState(false);
   const [now, setNow] = useState(Date.now());
@@ -49,6 +41,14 @@ export default function Home({ users }: Props) {
   useEffect(() => {
     run();
   }, [selectedUser]);
+
+  if (!users || users.length === 0) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center flex-col">
+        <span>您无权访问.</span>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen flex justify-center items-center flex-col">
