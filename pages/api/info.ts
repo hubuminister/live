@@ -38,6 +38,15 @@ export default async function handler(
         "User-Agent":
           "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Mobile Safari/537.36",
         Authorization: token[0].token,
+        Accept: "*/*",
+        channel: "apple",
+        "X-CLIENT-COLOR": "light",
+        "Accept-Encoding": " gzip, deflate, br",
+        "Content-Type": "application/json",
+        "Accept-Language": "zh-CN",
+        ua: "Mozilla/5.0 (iPhone; CPU OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+        Cookie:
+          "Accept-Language=zh-CN; X-CLIENT-COLOR=light; __Screen_W=750; app_version=7.21.4; channel=a0001i; dev_dna=D2PEMjFKOetCCaiPbcv2R8DQympHL4FHACylCO/7z1n6YX23; device=iPad8,6; lat=0; lon=0; native=1; net_op=unkonwn; screen_high=1334; timezone=Asia/Shanghai; token=ac7dcaa1ce7139469cd30044158e32a21cc5e334f6e2e028159088aded8d89766697ed50c9e0abae068797241c7efcfd07cda29e386f1387653601006a910e3eb5790d5f4d1b4efc5b8939765ecc3b4c89a55c25364e22ccd1713cd31b333887a3442a6cb43c2c64d09e997db194ad5c50a0cb77352b7103f41748ef028e0682b02ae3c425b4eaa8f1277c3c69b33bbc01d578a2336b0eda37a62b94ab23ca123d39a45e2f18eb7b5046d7b9fd9e0c815f1d254aa922ed508ce3232df4f3448f490c037e9e329e4e066752b662ddc0f11fbdc2c2576bdf16cfb8ec3f5345452dac3c5af5ac32b1962a5a9050353c2735e18e2c839f41c36dc34591e6e315eba256651383273eef7018862518709b8915d0acbad98fa80abb99ec8311afb40ada7358f396c25ce9f1bd3738e126fe5aba0ddf; uid=ac7d74e711a11e8b259481714bb75c4fa2cbf2310c8d82f1c2ca411df2bda1b47f46",
       },
     });
 
