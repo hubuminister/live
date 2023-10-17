@@ -79,11 +79,13 @@ export default async function handler(
         const { data: liveInfo } = await apis.获取直播流(
           data.data[0].liveshow.session_id
         );
-        if (liveInfo?.data?.[0]?.live_url) {
+        if (liveInfo.data[0].live_url) {
           const code = liveInfo.data[0].live_url.split("/")[4];
           resData.live_url = `https://pili-live-hls.blued.cn/blued/${code}.m3u8`;
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     console.log(

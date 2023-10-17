@@ -168,7 +168,8 @@ export default function Home({ users }: Props) {
                         "minutes"
                       )
                     ).toFixed(2)}{" "}
-                    豆/分钟
+                    豆/分钟 在线人数:{data.liveshow.realtime_count} 点赞数:
+                    {data.liveshow.liked}
                   </span>
                 )}
                 <span>{data.currentTotal} 豆</span>
