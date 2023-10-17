@@ -84,16 +84,18 @@ export default async function handler(
 
     if (data.data[0].liveshow) {
       resData.liveshow = data.data[0].liveshow;
-      try {
-        const { data: liveInfo } = await apis.获取直播流(
-          data.data[0].liveshow.session_id
-        );
-        if (liveInfo.data[0].live_url) {
-          const code = liveInfo.data[0].live_url.split("/")[4];
-          resData.live_url = `https://pili-live-hls.blued.cn/blued/${code}.m3u8`;
+      if (data.data[0].liveshow.session_id) {
+        try {
+          const { data: liveInfo } = await apis.获取直播流(
+            data.data[0].liveshow.session_id
+          );
+          if (liveInfo.data[0].live_url) {
+            const code = liveInfo.data[0].live_url.split("/")[4];
+            resData.live_url = `https://pili-live-hls.blued.cn/blued/${code}.m3u8`;
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
       }
     }
 
