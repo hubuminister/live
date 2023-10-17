@@ -152,25 +152,32 @@ export default function Home({ users }: Props) {
 
                 <span className=" font-bold">当前场次榜单</span>
                 {data.liveshow && (
-                  <span className="text-md">
-                    开播时间:{" "}
-                    {dayjs(data.liveshow.start_time * 1000).format("HH:mm:ss")}{" "}
-                    时长:{" "}
-                    {dayjs(now).diff(
-                      data.liveshow.start_time * 1000,
-                      "minutes"
-                    )}
-                    分钟{" "}
-                    {(
-                      data.currentTotal /
-                      dayjs(now).diff(
+                  <div className="flex flex-col">
+                    <span className="text-md">
+                      开播时间:{" "}
+                      {dayjs(data.liveshow.start_time * 1000).format(
+                        "HH:mm:ss"
+                      )}{" "}
+                      时长:{" "}
+                      {dayjs(now).diff(
                         data.liveshow.start_time * 1000,
                         "minutes"
-                      )
-                    ).toFixed(2)}{" "}
-                    豆/分钟 在线人数:{data.liveshow.realtime_count} 点赞数:
-                    {data.liveshow.liked}
-                  </span>
+                      )}
+                      分钟{" "}
+                      {(
+                        data.currentTotal /
+                        dayjs(now).diff(
+                          data.liveshow.start_time * 1000,
+                          "minutes"
+                        )
+                      ).toFixed(2)}{" "}
+                      豆/分钟
+                    </span>
+                    <span className="text-md">
+                      在线人数:{data.liveshow.realtime_count} 点赞数:
+                      {data.liveshow.liked}
+                    </span>
+                  </div>
                 )}
                 <span>{data.currentTotal} 豆</span>
                 <table className="w-full">
