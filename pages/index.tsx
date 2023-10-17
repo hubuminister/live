@@ -108,6 +108,11 @@ export default function Home({ users }: Props) {
                 <span className="text-xs ml-5">按照57%计佣</span>
               </div>
             )}
+            {data.live_url && (
+              <div className="w-full flex flex-col items-center justify-center">
+                <Link href={data.live_url}>在线查看直播</Link>
+              </div>
+            )}
             {data && data.consume && (
               <div className="mt-2 flex flex-col w-full">
                 <span className=" font-bold">月榜</span>
@@ -210,6 +215,7 @@ export default function Home({ users }: Props) {
 }
 
 import clientPromise from "@/lib/db";
+import Link from "next/link";
 export async function getServerSideProps(ctx: NextPageContext) {
   try {
     const { p } = ctx.query;

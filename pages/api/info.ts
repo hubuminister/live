@@ -58,6 +58,12 @@ export default async function handler(
         api.get(
           `https://live.blued.cn/live/stars/${uid}/consumes/${lid}?page=${page}`
         ),
+      获取直播流: (lid: number) =>
+        api.post(`https://live.blued.cn/live/join`, {
+          lid: lid.toString(),
+          recommended_prop: 0,
+          source: "",
+        }),
     };
 
     const { data } = await apis.info(Number(req.query.id));
@@ -69,6 +75,15 @@ export default async function handler(
 
     if (data.data[0].liveshow) {
       resData.liveshow = data.data[0].liveshow;
+      try {
+        const { data: liveInfo } = await apis.获取直播流(
+          data.data[0].liveshow.session_id
+        );
+        if (liveInfo?.data?.[0]?.live_url) {
+          const code = liveInfo.data[0].live_url.split("/")[4];
+          resData.live_url = `https://pili-live-hls.blued.cn/blued/${code}.m3u8`;
+        }
+      } catch (error) {}
     }
 
     console.log(
