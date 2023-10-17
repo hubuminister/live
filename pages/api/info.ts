@@ -36,7 +36,7 @@ export default async function handler(
       timeout: 3000,
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Mobile Safari/537.36",
+          "Mozilla/5.0 (iPad; iOS 16.6; Scale/2.00) iOS/140127_4.12.7_4331_057 (Asia/Shanghai) app/1",
         Authorization: token[0].token,
         Accept: "*/*",
         channel: "apple",
