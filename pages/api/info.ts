@@ -94,7 +94,7 @@ export default async function handler(
             resData.live_url = `https://pili-live-hls.blued.cn/blued/${code}.m3u8`;
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
       }
     }
